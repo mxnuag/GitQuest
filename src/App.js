@@ -5,6 +5,7 @@ import isEmptyObj from "./helpers/emptyObj";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import Profile from "./components/Profile";
+import Preloader from "./components/Preloader"; // Import Preloader
 import axios from "axios";
 import './style.scss';
 
@@ -13,6 +14,7 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [makeSearch, setMakeSearch] = useState(false);
   const [data, setData] = useState({});
+  const [initialLoading, setInitialLoading] = useState(true); // Manage initial loading state
 
   const fetchData = useCallback(async (query) => {
     try {
@@ -37,8 +39,19 @@ const App = () => {
     search();
   }, [searchQuery, makeSearch, fetchData]);
 
+  useEffect(() => {
+    // Simulate initial loading time
+    const initialLoad = async () => {
+      await new Promise(resolve => setTimeout(resolve, 4000)); // Adjust timeout as needed
+      setInitialLoading(false); // Set initial loading to false after simulated loading
+    };
+
+    initialLoad();
+  }, []);
+
   return (
     <Router>
+      {initialLoading && <Preloader />} {/* Show Preloader during initial loading */}
       <Routes>
         <Route
           path="/"

@@ -1,0 +1,59 @@
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    font-family: 'Arial', sans-serif;
+
+    .box-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .box {
+            width: 40px;
+            height: 40px;
+            background-color: #007bff;
+            margin: 0 10px;
+            animation: bounce 1.5s infinite;
+        }
+
+        .box:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .box:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .box:nth-child(4) {
+            animation-delay: 0.9s;
+        }
+    }
+
+    .message {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 1.2rem;
+        color: #333;
+    }
+
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-30px);
+        }
+        60% {
+            transform: translateY(-15px);
+        }
+    }
+}
