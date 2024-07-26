@@ -5,7 +5,7 @@ import isEmptyObj from "./helpers/emptyObj";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import Profile from "./components/Profile";
-import Preloader from "./components/Preloader"; // Import Preloader
+import Preloader from "./components/Preloader";
 import axios from "axios";
 import './style.scss';
 
@@ -14,7 +14,8 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [makeSearch, setMakeSearch] = useState(false);
   const [data, setData] = useState({});
-  const [initialLoading, setInitialLoading] = useState(true); // Manage initial loading state
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [contentVisible, setContentVisible] = useState(false);
 
   const fetchData = useCallback(async (query) => {
     try {
@@ -40,10 +41,10 @@ const App = () => {
   }, [searchQuery, makeSearch, fetchData]);
 
   useEffect(() => {
-    // Simulate initial loading time
     const initialLoad = async () => {
       await new Promise(resolve => setTimeout(resolve, 4000)); // Adjust timeout as needed
-      setInitialLoading(false); // Set initial loading to false after simulated loading
+      setInitialLoading(false);
+      setTimeout(() => setContentVisible(true), 100); // Slight delay for smoothness
     };
 
     initialLoad();
@@ -51,34 +52,35 @@ const App = () => {
 
   return (
     <Router>
-      {initialLoading && <Preloader />} {/* Show Preloader during initial loading */}
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div className="container" data-theme={theme}>
-              <Header theme={theme} setTheme={setTheme} />
-              <SearchBar
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                setMakeSearch={setMakeSearch}
-                data={data}
-              />
-              {/* Conditional rendering based on the state */}
-              {!isEmptyObj(data) && <Navigate to="/profile" replace />}
-            </div>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <div className="container" data-theme={theme}>
-              <Header theme={theme} setTheme={setTheme} />
-              <Profile data={data} />
-            </div>
-          }
-        />
-      </Routes>
+      {initialLoading && <Preloader />}
+      <div className={`container${contentVisible ? ' fade-in' : ''}`} data-theme={theme}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Header theme={theme} setTheme={setTheme} />
+                <SearchBar
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                  setMakeSearch={setMakeSearch}
+                  data={data}
+                />
+                {!isEmptyObj(data) && <Navigate to="/profile" replace />}
+              </>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <>
+                <Header theme={theme} setTheme={setTheme} />
+                <Profile data={data} />
+              </>
+            }
+          />
+        </Routes>
+      </div>
       <Toaster
         position="bottom-center"
         toastOptions={{

@@ -10,7 +10,7 @@
         --theme-icon: "moon";
         --theme-icon: url("./resources/moon.svg")
     }
-    
+
     [data-theme="dark"] {
         --action-shade: #fddb00;
         --active-action-shade: #e4c500;
@@ -20,13 +20,16 @@
         --theme-icon: "sun";
         --theme-icon: url("./resources/sunny.svg")
     }
-    
+
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: 'Red Hat Text', sans-serif;
+    font-family: 'Red Hat Text',
+    sans-serif;
     color: var(--txt-color);
-    transition: color .25s, background-color .25s, transform .25s;
+    transition: color .25s,
+    background-color .25s,
+    transform .25s;
 
     @media screen and (max-width: 500px) {
         font-size: 14px;
@@ -35,24 +38,15 @@
 
 @keyframes moveBackground {
     from {
-      background-position: 0 0;
+        background-position: 0 0;
     }
+
     to {
-      background-position: 100% 100%;
+        background-position: 100% 100%;
     }
 }
 
-.animated-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: linear-gradient(45deg, #1a73e8, #fddb00, #202124, #e4c500);
-    background-size: 400% 400%;
-    animation: moveBackground 15s linear infinite;
-}
+
 
 .container {
     min-height: 100vh;
@@ -62,8 +56,10 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    transition: opacity 0.5s ease-in;
+    opacity: 0;
 
-    & > div {
+    &>div {
         width: 100%;
     }
 
@@ -83,6 +79,9 @@
         padding: 2.5rem 5vw;
     }
 }
+.container.fade-in {
+    opacity: 1;
+  }
 
 .header {
     display: flex;
@@ -106,7 +105,7 @@
         }
     }
 
-    & ~ div {
+    &~div {
         background-color: var(--card-shade);
         border-radius: 0.5rem;
         box-shadow: 0 0.1rem 0.5rem 0.1rem rgba(0, 0, 0, 0.05);
@@ -139,10 +138,11 @@
         }
     }
 
-    input, button {
+    input,
+    button {
         border: none;
     }
-    
+
     input {
         font-size: 1.1rem;
         padding: 0 1rem;
@@ -193,7 +193,7 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
         &:hover {
-            background-color:#aa9b39;
+            background-color: #aa9b39;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
             transform: scale(1.05);
         }
@@ -241,14 +241,17 @@
                 opacity: 0;
                 transform: translate(-50%, -60%);
             }
+
             10% {
                 opacity: 1;
                 transform: translate(-50%, -50%);
             }
+
             90% {
                 opacity: 1;
                 transform: translate(-50%, -50%);
             }
+
             100% {
                 opacity: 0;
                 transform: translate(-50%, -40%);
@@ -266,7 +269,7 @@
         padding: 1.5rem;
     }
 
-    & > * {
+    &>* {
         display: flex;
 
         &.bio {
@@ -304,7 +307,7 @@
             }
         }
     }
-    
+
     .lessOpaque {
         opacity: 0.85;
     }
@@ -362,7 +365,7 @@
             font-size: 1.05rem;
             color: var(--action-shade);
         }
-        
+
         .statBox-value {
             font-size: 2rem;
             font-weight: 700;
@@ -374,7 +377,7 @@
         flex-wrap: wrap;
         margin: 0 -1rem;
 
-        & > .field {
+        &>.field {
             width: calc(50% - 2rem);
             padding: 1rem 0;
             margin: 0 1rem;
@@ -383,7 +386,7 @@
                 width: calc(100% - 2rem);
             }
 
-            & > *:first-child {
+            &>*:first-child {
                 margin-right: 1rem;
             }
         }
@@ -417,8 +420,8 @@
     text-align: center;
     margin-top: 1rem;
     transition: background-color 0.3s;
-  
+
     &:hover {
-      background-color: darken(#007bff, 10%); // Replace with your direct color value
+        background-color: darken(#007bff, 10%); // Replace with your direct color value
     }
 }
