@@ -1,14 +1,15 @@
 import React from 'react';
-import './Preloader.scss'; // Ensure this path is correct
+import './Preloader.scss';
+import { FaGithub, FaCode, FaSpinner, FaTerminal } from 'react-icons/fa';
 
 const Preloader = () => {
     return (
         <div className="preloader">
             <div className="box-container">
-                <div className="box"></div>
-                <div className="box"></div>
-                <div className="box"></div>
-                <div className="box"></div>
+                <div className="box"><FaGithub /></div>
+                <div className="box"><FaCode /></div>
+                <div className="box"><FaSpinner /></div>
+                <div className="box"><FaTerminal /></div>
             </div>
             <div className="message">
                 <p>Finding someone’s GitHub profile...</p>
