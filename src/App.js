@@ -1,11 +1,12 @@
+import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import isEmptyObj from "./helpers/emptyObj";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import Profile from "./components/Profile";
 import Preloader from "./components/Preloader";
+import WhatsAppChatButton from "./components/WhatsAppChatButton"; // Import the new component
 import axios from "axios";
 import './style.scss';
 
@@ -16,6 +17,7 @@ const App = () => {
   const [data, setData] = useState({});
   const [initialLoading, setInitialLoading] = useState(true);
   const [contentVisible, setContentVisible] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   const fetchData = useCallback(async (query) => {
     try {
@@ -50,10 +52,35 @@ const App = () => {
     initialLoad();
   }, []);
 
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  // Generate an array of dots for the animation
+  const dots = Array.from({ length: 50 }, (_, i) => <div key={i} className="dot" style={{ '--i': i }}></div>);
+
   return (
     <Router>
       {initialLoading && <Preloader />}
+      <div className="animated-background">
+        {dots}
+      </div>
       <div className={`container${contentVisible ? ' fade-in' : ''}`} data-theme={theme}>
+        <div
+          className="mouse-follow"
+          style={{
+            transform: `translate(${mousePos.x / 50}px, ${mousePos.y / 50}px)`,
+            transition: 'transform 0.1s ease-out'
+          }}
+        ></div>
         <Routes>
           <Route
             path="/"
@@ -84,13 +111,14 @@ const App = () => {
       <Toaster
         position="bottom-center"
         toastOptions={{
-          duration: 3000,
+          duration: 9000,
           style: {
             background: theme === "light" ? "#363636" : "#fff",
             color: theme === "light" ? "#fff" : "#363636",
           },
         }}
       />
+      <WhatsAppChatButton /> {/* Add the WhatsApp chat button */}
     </Router>
   );
 }

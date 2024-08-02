@@ -1,0 +1,55 @@
+.header {
+    position: relative;
+    z-index: 1;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid #ccc;
+
+    .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .theme-toggler {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+
+        .theme-name {
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+    }
+}
+
+.moving-boxes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0; /* Ensure it's behind the header content */
+
+    .box {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: rgba(0, 0, 0, 0.1); /* Adjust color and transparency */
+        animation: move 10s linear infinite;
+        animation-delay: calc(var(--i) * -1s);
+    }
+}
+
+@keyframes move {
+    0% {
+        transform: translateY(-100%) translateX(0);
+    }
+    100% {
+        transform: translateY(100%) translateX(calc(var(--i) * 10px));
+    }
+}

@@ -11,7 +11,7 @@ const Profile = (props) => {
     const navigate = useNavigate(); // Initialize the navigate function
 
     const handleGoBack = () => {
-        navigate("/"); // Navigate to the previous page in the history stack
+        navigate("/#header"); // Navigate to the previous page in the history stack
     }
 
     const avatarStyleObj = {
