@@ -1,18 +1,24 @@
 import { useState } from "react";
-import { SearchIcon, XCircleIcon } from "@primer/octicons-react"; // Import XCircleIcon for error sign
+import { SearchIcon, XCircleIcon } from "@primer/octicons-react";
+import toast from 'react-hot-toast';
 import isEmptyObj from "../helpers/emptyObj";
 
 const SearchBar = (props) => {
-    const [error, setError] = useState(false); // State to manage error visibility
+    const [error, setError] = useState(false);
 
     const handleSearch = () => {
-        if (!props.searchQuery.trim()) {
-            setError(true); // Show error if input is blank
-            setTimeout(() => setError(false), 3000); // Hide error after 3 seconds
+        if (!props.isAuthenticated) {
+            toast.error("Please sign in to continue.");
             return;
         }
 
-        setError(false); // Hide error if input is not blank
+        if (!props.searchQuery.trim()) {
+            setError(true);
+            setTimeout(() => setError(false), 3000);
+            return;
+        }
+
+        setError(false);
         if (props.searchQuery.length && (isEmptyObj(props.data) || props.searchQuery.toLowerCase() !== props.data.login.toLowerCase())) {
             props.setMakeSearch(true);
         }
@@ -27,7 +33,7 @@ const SearchBar = (props) => {
                 spellCheck="false"
                 onChange={(event) => { 
                     props.setSearchQuery(event.target.value.trim());
-                    setError(false); // Hide error when user types
+                    setError(false);
                 }}
                 value={props.searchQuery}
             />
