@@ -6,7 +6,7 @@ import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import Profile from "./components/Profile";
 import Preloader from "./components/Preloader";
-import WhatsAppChatButton from "./components/WhatsAppChatButton"; // Import the new component
+import WhatsAppChatButton from "./components/WhatsAppChatButton";
 import axios from "axios";
 import './style.scss';
 
@@ -26,6 +26,7 @@ const App = () => {
       toast.success("User found", { id: "success" });
     } catch (e) {
       toast.error("User does not exist!", { id: "error" });
+      setData({}); // Reset data on error
       console.log(e);
     }
   }, []);
@@ -118,7 +119,7 @@ const App = () => {
           },
         }}
       />
-      <WhatsAppChatButton /> {/* Add the WhatsApp chat button */}
+      {contentVisible && <WhatsAppChatButton />}
     </Router>
   );
 }

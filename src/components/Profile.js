@@ -1,5 +1,6 @@
-import { OrganizationIcon, LocationIcon, LinkIcon } from "@primer/octicons-react";
+import React from "react";
 import { useNavigate } from 'react-router-dom';
+import { OrganizationIcon, LocationIcon, LinkIcon } from "@primer/octicons-react";
 
 const getDateString = (dateVal) => {
     const date = new Date(dateVal).toDateString().split(" ");
@@ -11,7 +12,7 @@ const Profile = (props) => {
     const navigate = useNavigate(); // Initialize the navigate function
 
     const handleGoBack = () => {
-        navigate("/#header"); // Navigate to the previous page in the history stack
+        navigate("/"); // Navigate to the search page
     }
 
     const avatarStyleObj = {
