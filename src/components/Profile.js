@@ -12,7 +12,7 @@ const Profile = (props) => {
     const navigate = useNavigate(); // Initialize the navigate function
 
     const handleGoBack = () => {
-        navigate("/"); // Navigate to the search page
+        navigate("/search-bar"); // Navigate to the search page
     }
 
     const avatarStyleObj = {

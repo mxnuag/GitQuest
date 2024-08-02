@@ -1,3 +1,4 @@
+// App.js
 import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
@@ -7,6 +8,7 @@ import SearchBar from "./components/SearchBar";
 import Profile from "./components/Profile";
 import Preloader from "./components/Preloader";
 import WhatsAppChatButton from "./components/WhatsAppChatButton";
+import LoginButton from "./components/LoginButton";
 import axios from "axios";
 import './style.scss';
 
@@ -18,6 +20,9 @@ const App = () => {
   const [initialLoading, setInitialLoading] = useState(true);
   const [contentVisible, setContentVisible] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [greetingShown, setGreetingShown] = useState(false);
 
   const fetchData = useCallback(async (query) => {
     try {
@@ -26,7 +31,6 @@ const App = () => {
       toast.success("User found", { id: "success" });
     } catch (e) {
       toast.error("User does not exist!", { id: "error" });
-      setData({}); // Reset data on error
       console.log(e);
     }
   }, []);
@@ -45,35 +49,32 @@ const App = () => {
 
   useEffect(() => {
     const initialLoad = async () => {
-      await new Promise(resolve => setTimeout(resolve, 4000)); // Adjust timeout as needed
+      await new Promise(resolve => setTimeout(resolve, 4000));
       setInitialLoading(false);
-      setTimeout(() => setContentVisible(true), 100); // Slight delay for smoothness
+      setTimeout(() => setContentVisible(true), 100);
     };
 
     initialLoad();
   }, []);
 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
+  const handleLogin = (name) => {
+    setIsAuthenticated(true);
+    setUserName(name);
+    if (!greetingShown) {
+      toast.success(`Welcome back, ${name}!`, { id: "welcome" });
+      setGreetingShown(true);
+    }
+  };
 
-    window.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
-
-  // Generate an array of dots for the animation
-  const dots = Array.from({ length: 50 }, (_, i) => <div key={i} className="dot" style={{ '--i': i }}></div>);
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setUserName("");
+    toast.success("Logged out successfully!", { id: "logout" });
+  };
 
   return (
     <Router>
       {initialLoading && <Preloader />}
-      <div className="animated-background">
-        {dots}
-      </div>
       <div className={`container${contentVisible ? ' fade-in' : ''}`} data-theme={theme}>
         <div
           className="mouse-follow"
@@ -82,17 +83,19 @@ const App = () => {
             transition: 'transform 0.1s ease-out'
           }}
         ></div>
+        <Header theme={theme} setTheme={setTheme} />
+        <LoginButton onLogin={handleLogin} onLogout={handleLogout} isAuthenticated={isAuthenticated} />
         <Routes>
           <Route
             path="/"
             element={
               <>
-                <Header theme={theme} setTheme={setTheme} />
                 <SearchBar
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}
                   setMakeSearch={setMakeSearch}
                   data={data}
+                  isAuthenticated={isAuthenticated} // Pass authentication status
                 />
                 {!isEmptyObj(data) && <Navigate to="/profile" replace />}
               </>
@@ -100,12 +103,7 @@ const App = () => {
           />
           <Route
             path="/profile"
-            element={
-              <>
-                <Header theme={theme} setTheme={setTheme} />
-                <Profile data={data} />
-              </>
-            }
+            element={<Profile data={data} />}
           />
         </Routes>
       </div>
